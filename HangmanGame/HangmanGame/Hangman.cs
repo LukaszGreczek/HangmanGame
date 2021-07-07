@@ -6,6 +6,7 @@ namespace HangmanGame
 {
     public class Hangman
     {
+        HighScore highScore = new HighScore();
         Dictionary<string, string> capitalDictionary;
         List<string> nationList = new List<string>();
         List<char> notInWord = new List<char>();
@@ -122,10 +123,15 @@ namespace HangmanGame
 
         }
 
-        public void IsAlive()
+        public bool IsAlive()
         {
             if (lifeToken <= 0)
+            {
                 IsRunning = false;
+                return false;
+            }
+            else
+                return true;
 
         }
 
@@ -168,6 +174,8 @@ namespace HangmanGame
             {
                 Console.WriteLine("You guessed the capital after {0} letters.It took you {1} seconds"
                     ,  gameTimer.DisplayTime(), counter);
+
+                highScore.Add(GetUserName(), DateTime.Now.ToString(), gameTimer.DisplayTime(), counter, guessingCapital);
             }
             else
             {
@@ -175,6 +183,20 @@ namespace HangmanGame
                     , gameTimer.DisplayTime() , counter);
             }
 
+        }
+
+        public void DisplayHighScore()
+        {
+            highScore.Display();
+        }
+
+        private string GetUserName()
+        {
+            string line;
+            Console.WriteLine("Type your player name: ");
+
+            line = Console.ReadLine();
+            return line;
         }
     }
 }
